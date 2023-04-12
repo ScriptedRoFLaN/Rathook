@@ -1,6 +1,4 @@
-<center>
-    <img width="400rem" src="./Resources/img/logo.png">
-</center>
+<div align="center"><img width="400rem" src="./Resources/img/logo.png"></div>
 
 <div align="center"><h3>Cunthook</h3></div>
 <div align="center"><span>The best linux cheat right next to cathook.</span></div>
