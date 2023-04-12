@@ -14,6 +14,7 @@
 * Update CXX to 23 and also fix other CMAKE related things.
 * Add offsets for **Resupply Cabinet** for Navbot to find when in need of health.
 * Remove git-checks and other git things to make each git install of this project isloted to itself.
+* Automatically install NavMeshes.
 
 <br>
 <br>

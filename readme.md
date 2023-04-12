@@ -32,7 +32,7 @@ Please follow the steps below to install cunthook to your computer and use it wi
 
 ## FQA
 * How do I open the menu?
-    * Press **INSERT** while activily focused inside **Team Fortress 2**.
+    * Press **INSERT** while actively focused inside **Team Fortress 2**.
 * Where is my configs saved?
     * Your configuration files when using the **cat_save** or **cat_load** commands are located in the **opt** folder or more directly **opt/cunthook/data**.
 * I found an error where do I report?
