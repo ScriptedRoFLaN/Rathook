@@ -1,8 +1,7 @@
 cmake_minimum_required(VERSION 3.20)
 
 set(NativePrecompiledHeaders 1)
-# Ensure that only 32 bit libraries are used.
-set(CMAKE_TOOLCHAIN_FILE "${CMAKE_SOURCE_DIR}/Toolchain-cross-m32.cmake")
+set(CMAKE_TOOLCHAIN_FILE "${CMAKE_SOURCE_DIR}/toolchain.cmake")
 
 #
 # Config stuff
@@ -122,7 +121,7 @@ execute_process(COMMAND
         ERROR_QUIET OUTPUT_STRIP_TRAILING_WHITESPACE)
 
 set( CMAKE_SKIP_RPATH true )
-find_library(ValveLibraryVStdLib NAMES vstdlib PATHS "${PROJECT_SOURCE_DIR}/lib" NO_DEFAULT_PATH)
+find_library(ValveLibraryVStdLib NAMES vstdlib PATHS "${PROJECT_SOURCE_DIR}" NO_DEFAULT_PATH)
 
 if(EnableIPC)
     add_subdirectory(external/simple-ipc)
@@ -207,11 +206,6 @@ endif()
 
 target_include_directories(cathook PRIVATE include include/hooks)
 
-add_custom_target(data
-        bash ./install-data "${DataPath}"
-        WORKING_DIRECTORY "${CMAKE_SOURCE_DIR}"
-        VERBATIM)
-
 # SDL included because of https://cathook.club/issues/689
 target_link_libraries(cathook ${ValveLibraryVStdLib} ${SDL2_LIBRARY})
 set_target_properties(cathook PROPERTIES LIBRARY_OUTPUT_DIRECTORY ${CMAKE_BINARY_DIR}/bin)
@@ -219,14 +213,12 @@ set_target_properties(cathook PROPERTIES LIBRARY_OUTPUT_DIRECTORY ${CMAKE_BINARY
 add_subdirectory(src)
 add_subdirectory(include)
 add_subdirectory(external)
-add_subdirectory(modules)
-
 
 target_precompile_headers(cathook PRIVATE "${CMAKE_SOURCE_DIR}/include/common.hpp")
 
 if (NOT Internal_Symbolized)
     add_custom_command(TARGET cathook POST_BUILD
-        COMMAND ${CMAKE_COMMAND} -E copy $<TARGET_FILE:cathook> "${CMAKE_SOURCE_DIR}/bin/$<TARGET_FILE_NAME:cathook>")
+        COMMAND ${CMAKE_COMMAND} -E copy $<TARGET_FILE:cathook> "${CMAKE_SOURCE_DIR}/cunthook.so")
 else()
     message("Symbolized build")
     set(Internal_Symbolized 0 CACHE INTERNAL "Build cathook with symbols so crashes can be sent" FORCE)
