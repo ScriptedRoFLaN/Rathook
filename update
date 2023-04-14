@@ -218,9 +218,13 @@ function Update() {
     BUFF=$(grep -c ^'processor' /proc/cpuinfo);
     pushd "Project/Build" && cmake ../ && cmake --build . --target cunthook -- -j$BUFF; popd;
 
-    echo -e "\nInstalling NavMeshes (may require sudo)...";
-    sudo cp -R Resources/meshes/* ~/.steam/steam/steamapps/common/Team\ Fortress\ 2/tf/maps;
-    sudo chmod 755 -R ~/.steam/steam/steamapps/common/Team\ Fortress\ 2/tf/maps;
+    if [ "$(find ~/.steam/steam/steamapps/common/Team\ Fortress\ 2/tf/maps/ -maxdepth 1 -type f | grep -i '.*\.nav$')" == "" ]; then
+        echo -e "\nInstalling NavMeshes (may require sudo)...";
+        sudo cp -R Resources/meshes/* ~/.steam/steam/steamapps/common/Team\ Fortress\ 2/tf/maps;
+        sudo chmod 755 -R ~/.steam/steam/steamapps/common/Team\ Fortress\ 2/tf/maps;
+    else
+        echo -e "\nNavMeshes already installed";
+    fi
 }
 
 
