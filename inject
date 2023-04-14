@@ -17,7 +17,6 @@ function InjectSO() {
     line=$(pgrep -u $RUNUSER -o hl2_linux);
     arr=($line);
 
-
     if [ $# == 1 ]; then
         proc=$1;
     else

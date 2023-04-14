@@ -1,20 +1,22 @@
-cmake_minimum_required(VERSION 3.20)
+cmake_minimum_required(VERSION 3.20.4)
 
 set(NativePrecompiledHeaders 1)
 set(CMAKE_TOOLCHAIN_FILE "${CMAKE_SOURCE_DIR}/toolchain.cmake")
 
-#
-# Config stuff
-#
+
+#-- Configuration for cunthook based off internal codes
+#-- please be careful when editing this section.
 
 if(NOT CMAKE_BUILD_TYPE)
     set(CMAKE_BUILD_TYPE "Release" CACHE STRING "Build type")
 endif()
 set(CMAKE_BUILD_TYPE_VALUES "Debug;Release" CACHE INTERNAL "List of supported build")
 set_property(CACHE CMAKE_BUILD_TYPE PROPERTY STRINGS ${CMAKE_BUILD_TYPE_VALUES})
+
 if(CMAKE_BUILD_TYPE STREQUAL "Release")
     set(CMAKE_INTERPROCEDURAL_OPTIMIZATION TRUE)
 endif()
+
 set(Force_CXX_23B 0 CACHE BOOL "Force 23B as the CXX Standard, useful for disrepancies in compiler and IDE")
 
 project(cathook VERSION 0.0.1)
@@ -74,8 +76,9 @@ if(NOT EnableVisuals)
     set(EnableGUI 0)
 endif()
 
-# Internal variables
-# INTERNAL implies "FORCE" by default, so don't set if already set
+
+#-- Internal variables implied as "FORCE" by default
+#-- don't set these if they are already set anyways.
 if (NOT DEFINED Internal_Binarymode)
     set(Internal_Binarymode 0 CACHE INTERNAL "Build cathook to be used in 'binary mode'")
 endif()
@@ -83,9 +86,8 @@ if (NOT DEFINED Internal_Symbolized)
     set(Internal_Symbolized 0 CACHE INTERNAL "Build cathook with symbols so crashes can be sent")
 endif()
 
-#
-# End of config stuff
-#
+#-- End of configuration
+
 
 if (EnableVisuals)
     set(OpenGL_GL_PREFERENCE "LEGACY")
@@ -102,18 +104,20 @@ find_package(SDL2 REQUIRED)
 find_package(Boost 1.76.5 EXACT)
 if (NOT ${Boost_FOUND})
     set(BOOST_LIBS_OPTIONAL "" CACHE STRING "Boost libs to be compiled")
-    add_subdirectory(external/boost-cmake)
+    add_subdirectory(external/Boost)
     SET (BOOST_ROOT ${CMAKE_BINARY_DIR}/_deps/boost-src)
     find_package(Boost 1.76.5 EXACT)
     include_directories(${Boost_INCLUDE_DIRS})
 endif()
 
+
+#-- These manage the HASH and DATE when you cloned this project
+#-- this is used within the watermark ONLY.
 execute_process(COMMAND
         "${GIT_EXECUTABLE}" log -1 --pretty=\"%h\"
         WORKING_DIRECTORY "${CMAKE_SOURCE_DIR}"
         OUTPUT_VARIABLE GIT_COMMIT_HASH
         ERROR_QUIET OUTPUT_STRIP_TRAILING_WHITESPACE)
-
 execute_process(COMMAND
         "${GIT_EXECUTABLE}" log -1 --pretty=\"%ai\"
         WORKING_DIRECTORY "${CMAKE_SOURCE_DIR}"
@@ -127,12 +131,10 @@ if(EnableIPC)
     add_subdirectory(external/simple-ipc)
     target_link_libraries(cathook SimpleIPC)
 endif()
-
 if(EnableNullNexus)
     add_subdirectory(external/libnullnexus)
     target_link_libraries(cathook libnullnexus)
 endif()
-
 if(EnableVisuals)
     if (EnableGlezDrawing)
         add_subdirectory(external/libglez)
@@ -154,6 +156,9 @@ if(EnableVisuals)
     endif()
 endif()
 
+
+#-- These manage both all the settings within this cmake file and
+#-- the github HASH and DATE and complie it into a file for c++ to use.
 configure_file(include/config.h.in ${CMAKE_SOURCE_DIR}/include/config.h @ONLY)
 configure_file(include/version.h.in ${CMAKE_SOURCE_DIR}/include/version.h @ONLY)
 
@@ -171,7 +176,6 @@ if (Force_CXX_23B)
     set(CMAKE_CXX_FLAGS "-std=gnu++2b ${CMAKE_CXX_FLAGS}")
 endif()
 
-
 target_compile_definitions(cathook PRIVATE
         _GLIBCXX_USE_CXX11_ABI=0
         _POSIX=1
@@ -185,14 +189,14 @@ target_compile_definitions(cathook PRIVATE
         NO_MALLOC_OVERRIDE=1)
 
 target_include_directories(cathook SYSTEM PRIVATE
-        "external/source-sdk-2013-headers/mp/src/mathlib"
-        "external/source-sdk-2013-headers/mp/src/public"
-        "external/source-sdk-2013-headers/mp/src/common"
-        "external/source-sdk-2013-headers/mp/src/public/tier0"
-        "external/source-sdk-2013-headers/mp/src/public/tier1"
-        "external/source-sdk-2013-headers/mp/src/public/steam"
-        "external/source-sdk-2013-headers/mp/src/tier1"
-        "external/source-sdk-2013-headers/mp/src")
+        "external/Headers/mp/src/mathlib"
+        "external/Headers/mp/src/public"
+        "external/Headers/mp/src/common"
+        "external/Headers/mp/src/public/tier0"
+        "external/Headers/mp/src/public/tier1"
+        "external/Headers/mp/src/public/steam"
+        "external/Headers/mp/src/tier1"
+        "external/Headers/mp/src")
 
 if(EnableWarnings)
     target_compile_options(cathook PRIVATE -Wall -Wextra -Wno-unused-parameter -Wno-class-memaccess -Wno-strict-aliasing -Wno-sign-compare)
@@ -203,10 +207,7 @@ if(Internal_Binarymode)
     target_compile_options(cathook PRIVATE -march=x86-64)
 endif()
 
-
 target_include_directories(cathook PRIVATE include include/hooks)
-
-# SDL included because of https://cathook.club/issues/689
 target_link_libraries(cathook ${ValveLibraryVStdLib} ${SDL2_LIBRARY})
 set_target_properties(cathook PROPERTIES LIBRARY_OUTPUT_DIRECTORY ${CMAKE_BINARY_DIR}/bin)
 
@@ -216,6 +217,9 @@ add_subdirectory(external)
 
 target_precompile_headers(cathook PRIVATE "${CMAKE_SOURCE_DIR}/include/common.hpp")
 
+
+#-- This is the Dynamic Library file that gets built based off
+#-- all the configurations above and complies them into it.
 if (NOT Internal_Symbolized)
     add_custom_command(TARGET cathook POST_BUILD
         COMMAND ${CMAKE_COMMAND} -E copy $<TARGET_FILE:cathook> "${CMAKE_SOURCE_DIR}/cunthook.so")
