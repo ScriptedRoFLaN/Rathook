@@ -32,7 +32,7 @@ Please follow the steps below to install cunthook to your computer and use it wi
 * How do I open the menu?
     * Press **INSERT** while actively focused inside **Team Fortress 2**.
 * Where is my configs saved?
-    * Your configuration files when using the **cat_save** or **cat_load** commands are located in the **opt** folder or more directly **opt/cunthook/data**.
+    * Your configuration files when using the **cat_save** or **cat_load** commands are located in the **opt** folder or more directly **opt/cunthook/data**, this is also where your spams and chat says are like **spam.txt** or **killsays.txt**
 * I found an error where do I report?
     * Please check cathooks error page first and check if your answer exists there, if it does then dont send it here as cunthook is a close copy of cathook, and if it doesn't then you may send an **issue report** here.
 
