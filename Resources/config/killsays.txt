@@ -1,3 +1,10 @@
-REPLACE CONTENTS OF THIS FILE WITH ACTUAL KILLSAYS.
-Usable killsay macros: 
-%team% %class% %killer% %name% %myteam% %myclass% \n
+%name% thought they could take on %myclass%. %killer% proved them wrong!
+Looks like %name% didn't see %killer%'s %myclass% coming.
+%killer% just made %name% regret choosing %class% on %team%.
+Nice try, %name%, but you can't outsmart a skilled %myclass% like %killer%.
+%name% should have known better than to mess with %killer%'s %myclass% on %myteam%.
+%killer% just sent %name% back to respawn with a perfectly timed %myclass% move.
+RIP %name%. You never stood a chance against %killer%'s %myclass% on %myteam%.
+Goodbye, %name%. %killer%'s %myclass% always gets the last laugh on %myteam%.
+%name% thought they could sneak up on %killer%. But when you're a skilled %myclass%, nothing gets past you.
+Looks like %name% learned the hard way that you can't take down a skilled %myclass% like %killer% on %myteam%.
