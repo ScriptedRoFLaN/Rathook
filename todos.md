@@ -15,6 +15,8 @@
 * Add offsets for **Resupply Cabinet** for Navbot to find when in need of health.
 * Remove git-checks and other git things to make each git install of this project isloted to itself.
 * ~~Automatically install NavMeshes.~~
+* Prevent NavBot from getting stuck while attacking sentrys, dying instantly.
+* Fix Aimbot being inaccurate to the point its actually not good.
 
 <br>
 <br>
