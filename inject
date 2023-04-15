@@ -34,7 +34,7 @@ function InjectSO() {
     -ex "call ((void*(*)(const char*, int))dlopen)(\"$FILE\", 1)" \
     -ex "call ((char*(*)(void))dlerror)()" \
     -ex "detach" \
-    -ex "quit"
+    -ex "quit" 2> /dev/null;
 
     rm $FILE;
 
