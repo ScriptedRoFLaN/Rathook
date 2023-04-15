@@ -17,6 +17,7 @@
 * ~~Automatically install NavMeshes.~~
 * Prevent NavBot from getting stuck while attacking sentrys, dying instantly.
 * Fix Aimbot being inaccurate to the point its actually not good.
+* Fix angles as they are broken and do allow for slient and other aa features to work.
 
 <br>
 <br>
