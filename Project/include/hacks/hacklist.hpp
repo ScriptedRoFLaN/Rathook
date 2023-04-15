@@ -12,12 +12,10 @@
 #if ENABLE_VISUALS
 
 #include "ESP.hpp"
-#include "SkinChanger.hpp"
 
 #endif
 #include "Aimbot.hpp"
 #include "AntiAim.hpp"
-#include "AntiCheat.hpp"
 #include "navparser.hpp"
 #include "AutoJoin.hpp"
 #include "AntiBackstab.hpp"

@@ -189,10 +189,7 @@ DEFINE_HOOKED_METHOD(FrameStageNotify, void, void *this_, ClientFrameStage_t sta
         PROF_SECTION(FSN_antiantiaim);
         hacks::shared::anti_anti_aim::frameStageNotify(stage);
     }
-    {
-        PROF_SECTION(FSN_skinchanger);
-        hacks::tf2::skinchanger::FrameStageNotify(stage);
-    }
+    
     std::optional<Vector> backup_punch;
     if (isHackActive() && !g_Settings.bInvalid && stage == FRAME_RENDER_START)
     {
