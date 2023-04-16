@@ -20,8 +20,7 @@ namespace hooked_methods
 
 DEFINE_HOOKED_METHOD(Paint, void, IEngineVGui *this_, PaintMode_t mode)
 {
-    if (!isHackActive())
-    {
+    if (!isHackActive()) {
         return original::Paint(this_, mode);
     }
 
