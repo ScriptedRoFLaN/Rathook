@@ -540,8 +540,6 @@ DEFINE_HOOKED_METHOD(DrawModelExecute, void, IVModelRender *this_, const DrawMod
     if (!isHackActive() || effect_glow::g_EffectGlow.drawing || chams_attachment_drawing || (*clean_screenshots && g_IEngine->IsTakingScreenshot()) || disable_visuals || CE_BAD(LOCAL_E) || (!enable && !no_hats && !no_arms && !blend_zoom && !arms_chams && !local_weapon_chams /*&& !(hacks::tf2::backtrack::chams && hacks::tf2::backtrack::isBacktrackEnabled)*/))
         return original::DrawModelExecute(this_, state, info, bone);
 
-    PROF_SECTION(DrawModelExecute);
-
     if (!init_mat)
     {
         const char *cubemap_str = *envmap_matt ? "effects/saxxy/saxxy_gold" : "env_cubemap";

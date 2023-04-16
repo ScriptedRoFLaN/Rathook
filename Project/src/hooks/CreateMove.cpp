@@ -219,7 +219,6 @@ DEFINE_HOOKED_METHOD(CreateMove, bool, void *this_, float input_sample_time, CUs
         return true;
     }
 
-    PROF_SECTION(CreateMove);
 #if ENABLE_VISUALS
     stored_buttons = current_user_cmd->buttons;
     if (freecam_is_toggled)
@@ -255,16 +254,13 @@ DEFINE_HOOKED_METHOD(CreateMove, bool, void *this_, float input_sample_time, CUs
     // Do not update if in warp, since the entities will stay identical either way
     if (!hacks::tf2::warp::in_warp)
     {
-        PROF_SECTION(EntityCache);
         entity_cache::Update();
     }
     //	PROF_END("Entity Cache updating");
     {
-        PROF_SECTION(CM_PlayerResource);
         g_pPlayerResource->Update();
     }
     {
-        PROF_SECTION(CM_LocalPlayer);
         g_pLocalPlayer->Update();
     }
     PrecalculateCanShoot();
@@ -338,7 +334,6 @@ DEFINE_HOOKED_METHOD(CreateMove, bool, void *this_, float input_sample_time, CUs
                     }
                 }
             {
-                PROF_SECTION(CM_antiaim);
                 hacks::shared::antiaim::ProcessUserCmd(cmd);
             }
             if (debug_projectiles)
@@ -348,7 +343,6 @@ DEFINE_HOOKED_METHOD(CreateMove, bool, void *this_, float input_sample_time, CUs
     else
         return false;
     {
-        PROF_SECTION(CM_WRAPPER);
         EC::run(EC::CreateMove_NoEnginePred);
 
         if (engine_pred && g_pLocalPlayer->weapon_mode == weapon_projectile)
@@ -366,7 +360,6 @@ DEFINE_HOOKED_METHOD(CreateMove, bool, void *this_, float input_sample_time, CUs
         g_GlobalVars->curtime = curtime_old;
     g_Settings.bInvalid = false;
     {
-        PROF_SECTION(CM_chat_stack);
         chat_stack::OnCreateMove();
     }
 
@@ -374,7 +367,6 @@ DEFINE_HOOKED_METHOD(CreateMove, bool, void *this_, float input_sample_time, CUs
 
 #if ENABLE_IPC
     {
-        PROF_SECTION(CM_playerlist);
         static Timer ipc_update_timer{};
         //	playerlist::DoNotKillMe();
         if (ipc_update_timer.test_and_set(1000 * 10))
@@ -462,8 +454,6 @@ DEFINE_HOOKED_METHOD(CreateMoveInput, void, IInput *this_, int sequence_nr, floa
         WriteCmd(this_, current_late_user_cmd, sequence_nr);
         return;
     }
-
-    PROF_SECTION(CreateMoveInput);
 
     // Run EC
     EC::run(EC::CreateMoveLate);

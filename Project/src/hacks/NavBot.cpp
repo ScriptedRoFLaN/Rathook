@@ -718,7 +718,6 @@ std::optional<std::pair<CNavArea *, int>> findClosestHidingSpot(CNavArea *area, 
 // Try to avoid enemy sightlines and reload in peace
 bool runReload()
 {
-    PROF_SECTION(runReload)
     static Timer reloadrun_cooldown{};
 
     // Not reloading, do not run
@@ -781,7 +780,6 @@ bool runReload()
 // and snipe them)
 bool stayNear()
 {
-    PROF_SECTION(stayNear)
     static Timer staynear_cooldown{};
     static CachedEntity *previous_target = nullptr;
 

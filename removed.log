@@ -16,3 +16,4 @@ data/textures/atlas.xcf
 data/textures/idspec.png
 software_cursor_mode
 gametypes {hl2dm;dab;tf2c;css;dynamic}
+profiler

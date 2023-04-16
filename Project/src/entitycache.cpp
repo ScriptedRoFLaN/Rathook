@@ -42,7 +42,6 @@ static settings::Int ve_averager_size{ "debug.ve.averaging", "0" };
 
 bool CachedEntity::IsVisible()
 {
-    PROF_SECTION(CE_IsVisible);
     if (m_bVisCheckComplete)
         return m_bAnyHitboxVisible;
     auto hitbox = hitboxes.GetHitbox(std::max(0, (hitboxes.GetNumHitboxes() >> 1) - 1));

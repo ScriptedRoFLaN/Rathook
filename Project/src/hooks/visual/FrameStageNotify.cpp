@@ -40,8 +40,6 @@ DEFINE_HOOKED_METHOD(FrameStageNotify, void, void *this_, ClientFrameStage_t sta
     if (!isHackActive())
         return original::FrameStageNotify(this_, stage);
 
-    PROF_SECTION(FrameStageNotify_TOTAL);
-
     if (update_override_textures)
     {
         if (override_textures)
@@ -186,7 +184,6 @@ DEFINE_HOOKED_METHOD(FrameStageNotify, void, void *this_, ClientFrameStage_t sta
     if (!g_IEngine->IsInGame())
         g_Settings.bInvalid = true;
     {
-        PROF_SECTION(FSN_antiantiaim);
         hacks::shared::anti_anti_aim::frameStageNotify(stage);
     }
     
