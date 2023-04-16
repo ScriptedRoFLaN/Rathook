@@ -1,0 +1,16 @@
+<ElementGroup>
+    <Window x="1050" y="300" name="Main Window" width="content" height="content">
+        <TabContainer width="600" height="450">
+            <Include path="tabs/weapons.xml"/>
+            <Include path="tabs/crits.xml"/>
+            <Include path="tabs/visuals.xml"/>
+            <Include path="tabs/antiaim.xml"/>
+            <Include path="tabs/warp.xml"/>
+            <Include path="tabs/movement.xml"/>
+            <Include path="tabs/misc.xml"/>
+            <Include path="tabs/chat.xml"/>
+            <Include path="tabs/config.xml"/>
+            <Include path="tabs/hackinfo.xml"/>
+        </TabContainer>
+    </Window>
+</ElementGroup>
