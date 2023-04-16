@@ -94,12 +94,12 @@ if (EnableVisuals)
 endif()
 
 find_package(Git REQUIRED)
-set(CMAKE_MODULE_PATH ${CMAKE_MODULE_PATH} "${CMAKE_SOURCE_DIR}/external")
+set(CMAKE_MODULE_PATH ${CMAKE_MODULE_PATH} "${CMAKE_SOURCE_DIR}/Modules")
 find_package(SDL2 REQUIRED)
 find_package(Boost 1.76.5 EXACT)
 if (NOT ${Boost_FOUND})
     set(BOOST_LIBS_OPTIONAL "" CACHE STRING "Boost libs to be compiled")
-    add_subdirectory(external/Boost)
+    add_subdirectory(Modules/Boost)
     SET (BOOST_ROOT ${CMAKE_BINARY_DIR}/_deps/boost-src)
     find_package(Boost 1.76.5 EXACT)
     include_directories(${Boost_INCLUDE_DIRS})
@@ -123,23 +123,23 @@ set( CMAKE_SKIP_RPATH true )
 find_library(ValveLibraryVStdLib NAMES vstdlib PATHS "${PROJECT_SOURCE_DIR}" NO_DEFAULT_PATH)
 
 if(EnableIPC)
-    add_subdirectory(external/simple-ipc)
+    add_subdirectory(Modules/simple-ipc)
     target_link_libraries(cunthook SimpleIPC)
 endif()
 if(EnableNullNexus)
-    add_subdirectory(external/libnullnexus)
+    add_subdirectory(Modules/libnullnexus)
     target_link_libraries(cunthook libnullnexus)
 endif()
 if(EnableVisuals)
     if (EnableGlezDrawing)
-        add_subdirectory(external/libglez)
+        add_subdirectory(Modules/libglez)
     endif()
     target_include_directories(cunthook PRIVATE include/visual)
     find_package(SDL2 REQUIRED)
     if(ExternalDrawing)
-        add_subdirectory(external/libxoverlay)
+        add_subdirectory(Modules/libxoverlay)
         target_link_libraries(cunthook xoverlay)
-        target_include_directories(cunthook PRIVATE external/libxoverlay/include)
+        target_include_directories(cunthook PRIVATE Modules/libxoverlay/include)
     endif()
     target_include_directories(cunthook PRIVATE "${SDL2_INCLUDE_DIR}")
     if (EnableGlezDrawing)
@@ -154,8 +154,8 @@ endif()
 
 #-- These manage both all the settings within this cmake file and
 #-- the github HASH and DATE and complie it into a file for c++ to use.
-configure_file(include/config.h.in ${CMAKE_SOURCE_DIR}/include/config.h @ONLY)
-configure_file(include/version.h.in ${CMAKE_SOURCE_DIR}/include/version.h @ONLY)
+configure_file(Headers/config.h.in ${CMAKE_SOURCE_DIR}/Headers/config.h @ONLY)
+configure_file(Headers/version.h.in ${CMAKE_SOURCE_DIR}/Headers/version.h @ONLY)
 
 set(CMAKE_CXX_FLAGS "-m32 -march=native -fexceptions -DNDEBUG")
 if (CMAKE_CXX_COMPILER_ID STREQUAL "GNU")
@@ -184,14 +184,14 @@ target_compile_definitions(cunthook PRIVATE
         NO_MALLOC_OVERRIDE=1)
 
 target_include_directories(cunthook SYSTEM PRIVATE
-        "external/Headers/mp/src/mathlib"
-        "external/Headers/mp/src/public"
-        "external/Headers/mp/src/common"
-        "external/Headers/mp/src/public/tier0"
-        "external/Headers/mp/src/public/tier1"
-        "external/Headers/mp/src/public/steam"
-        "external/Headers/mp/src/tier1"
-        "external/Headers/mp/src")
+        "Modules/Headers/mp/src/mathlib"
+        "Modules/Headers/mp/src/public"
+        "Modules/Headers/mp/src/common"
+        "Modules/Headers/mp/src/public/tier0"
+        "Modules/Headers/mp/src/public/tier1"
+        "Modules/Headers/mp/src/public/steam"
+        "Modules/Headers/mp/src/tier1"
+        "Modules/Headers/mp/src")
 
 if(EnableWarnings)
     target_compile_options(cunthook PRIVATE -Wall -Wextra -Wno-unused-parameter -Wno-class-memaccess -Wno-strict-aliasing -Wno-sign-compare)
@@ -202,15 +202,15 @@ if(Internal_Binarymode)
     target_compile_options(cunthook PRIVATE -march=x86-64)
 endif()
 
-target_include_directories(cunthook PRIVATE include include/hooks)
+target_include_directories(cunthook PRIVATE include Headers/hooks)
 target_link_libraries(cunthook ${ValveLibraryVStdLib} ${SDL2_LIBRARY})
 set_target_properties(cunthook PROPERTIES LIBRARY_OUTPUT_DIRECTORY ${CMAKE_BINARY_DIR}/bin)
 
-add_subdirectory(src)
-add_subdirectory(include)
-add_subdirectory(external)
+add_subdirectory(Sources)
+add_subdirectory(Headers)
+add_subdirectory(Modules)
 
-target_precompile_headers(cunthook PRIVATE "${CMAKE_SOURCE_DIR}/include/common.hpp")
+target_precompile_headers(cunthook PRIVATE "${CMAKE_SOURCE_DIR}/Headers/common.hpp")
 
 
 #-- This is the Dynamic Library file that gets built based off

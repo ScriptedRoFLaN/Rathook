@@ -34,7 +34,7 @@ function InstallData() {
 
     echo -e "Checking data from \"Resources/config\" to \"$DATA_PATH\" \n";
 
-    rsync -avh "Project/data/" "$DATA_PATH" || { sudo rsync -avh "Project/data/" "$DATA_PATH"; };
+    rsync -avh "Project/Data/" "$DATA_PATH" || { sudo rsync -avh "Project/Data/" "$DATA_PATH"; };
     rsync -avh --ignore-existing "Resources/config/" "$DATA_PATH" || { sudo rsync -avh --ignore-existing "Resources/config/" "$DATA_PATH"; };
     chown -R $user "$DATA_PATH" || { sudo chown -R $user "$DATA_PATH"; };
     chmod -R 774 "$DATA_PATH" || { sudo chmod -R 774 "$DATA_PATH"; };
