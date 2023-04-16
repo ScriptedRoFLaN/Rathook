@@ -23,19 +23,6 @@ class IClientEntity;
 
 typedef unsigned int offset_t;
 
-/*template<typename T>
-inline T GetVar(IClientEntity* ent, unsigned int offset) {
-    int nullv = 0;
-    if (ent == 0) return *(reinterpret_cast<T*>(&nullv));
-    //logging::Info("GetEntityValue 0x%08x, 0x%08x", ent, offset);
-    return *(reinterpret_cast<T*>((unsigned int)ent + offset));
-}
-
-template<typename T>
-void SetVar(IClientEntity* ent, unsigned int offset, T value) {
-    *(reinterpret_cast<T*>((unsigned int)ent + offset)) = value;
-}*/
-
 void InitNetVars();
 
 class NetVars
@@ -156,7 +143,6 @@ public:
 
     offset_t hOwner;
     offset_t iWeaponState;
-    offset_t iCritMult; // TF2C
 
     offset_t flChargeLevel;
     offset_t bChargeRelease;

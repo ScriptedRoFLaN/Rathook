@@ -22,7 +22,6 @@
 #include "nospread.hpp"
 #include "Warp.hpp"
 
-static settings::Boolean minigun_jump{ "misc.minigun-jump-tf2c", "false" };
 static settings::Boolean roll_speedhack{ "misc.roll-speedhack", "false" };
 static settings::Boolean forward_speedhack{ "misc.roll-speedhack.forward", "false" };
 settings::Boolean engine_pred{ "misc.engine-prediction", "true" };

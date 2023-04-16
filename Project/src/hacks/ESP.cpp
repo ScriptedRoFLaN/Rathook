@@ -62,9 +62,6 @@ static settings::Boolean item_explosive{ "esp.item.explosive", "true" };
 static settings::Boolean item_crumpkin{ "esp.item.crumpkin", "true" };
 static settings::Boolean item_gargoyle{ "esp.item.gargoyle", "true" };
 static settings::Boolean item_objectives{ "esp.item.objectives", "false" };
-// TF2C
-static settings::Boolean item_weapon_spawners{ "esp.item.weapon-spawner", "true" };
-static settings::Boolean item_adrenaline{ "esp.item.adrenaline", "true" };
 
 static settings::Boolean proj_esp{ "esp.projectile.enable", "false" };
 static settings::Int proj_rockets{ "esp.projectile.rockets", "1" };
@@ -298,11 +295,9 @@ const std::string sentry_str               = "Sentry Gun";
 const std::string dispenser_str            = "Dispenser";
 const std::string rare_spell_str           = "Rare Spell";
 const std::string spell_str                = "Spell";
-const std::string tf2c_spawner_respawn_str = "-- Respawning --";
 const std::string ammo_big_str             = "Big Ammo";
 const std::string ammo_medium_str          = "Medium Ammo";
 const std::string ammo_small_str           = "Small Ammo";
-const std::string tf2c_adrenaline_str      = "[a]";
 const std::string hl_battery_str           = "[Z]";
 const std::string health_big_str           = "Big Medkit";
 const std::string health_medium_str        = "Medium Medkit";
@@ -1090,41 +1085,40 @@ void _FASTCALL ProcessEntity(CachedEntity *ent)
                     int max_health = g_pPlayerResource->GetMaxHealth(ent);
                     AddEntityString(ent, format(health, '/', max_health, " HP"), colors::Health(health, max_health));
                 }
-                IF_GAME(IsTF())
-                {
-                    // Medigun Ubercharge esp
-                    if (show_ubercharge)
-                    {
-                        if (CE_INT(ent, netvar.iClass) == tf_medic)
-                        {
-                            int *weapon_list = (int *) ((unsigned) (RAW_ENT(ent)) + netvar.hMyWeapons);
-                            for (int i = 0; weapon_list[i]; ++i)
-                            {
-                                int handle = weapon_list[i];
-                                int eid    = HandleToIDX(handle);
-                                if (eid > MAX_PLAYERS && eid <= HIGHEST_ENTITY)
-                                {
-                                    CachedEntity *weapon = ENTITY(eid);
-                                    if (!CE_INVALID(weapon) && weapon->m_iClassID() == CL_CLASS(CWeaponMedigun) && weapon)
-                                    {
-                                        std::string charge = std::to_string(int(CE_FLOAT(weapon, netvar.m_flChargeLevel) * 100));
 
-                                        if (CE_INT(weapon, netvar.iItemDefinitionIndex) != 998)
-                                        {
-                                            AddEntityString(ent, charge + "% Uber", colors::Health(CE_FLOAT(weapon, netvar.m_flChargeLevel) * 100, 100));
-                                        }
-                                        else
-                                            AddEntityString(ent, charge + "% Uber | Charges: " + std::to_string(int(CE_FLOAT(weapon, netvar.m_flChargeLevel) / 0.25f)), colors::Health((CE_FLOAT(weapon, netvar.m_flChargeLevel) * 100), 100));
-                                        break;
+                // Medigun Ubercharge esp
+                if (show_ubercharge)
+                {
+                    if (CE_INT(ent, netvar.iClass) == tf_medic)
+                    {
+                        int *weapon_list = (int *) ((unsigned) (RAW_ENT(ent)) + netvar.hMyWeapons);
+                        for (int i = 0; weapon_list[i]; ++i)
+                        {
+                            int handle = weapon_list[i];
+                            int eid    = HandleToIDX(handle);
+                            if (eid > MAX_PLAYERS && eid <= HIGHEST_ENTITY)
+                            {
+                                CachedEntity *weapon = ENTITY(eid);
+                                if (!CE_INVALID(weapon) && weapon->m_iClassID() == CL_CLASS(CWeaponMedigun) && weapon)
+                                {
+                                    std::string charge = std::to_string(int(CE_FLOAT(weapon, netvar.m_flChargeLevel) * 100));
+                                    if (CE_INT(weapon, netvar.iItemDefinitionIndex) != 998)
+                                    {
+                                        AddEntityString(ent, charge + "% Uber", colors::Health(CE_FLOAT(weapon, netvar.m_flChargeLevel) * 100, 100));
                                     }
+                                    else
+                                        AddEntityString(ent, charge + "% Uber | Charges: " + std::to_string(int(CE_FLOAT(weapon, netvar.m_flChargeLevel) / 0.25f)), colors::Health((CE_FLOAT(weapon, netvar.m_flChargeLevel) * 100), 100));
+                                    break;
                                 }
                             }
                         }
                     }
-                    // Conditions esp
-                    if (show_conditions)
-                        ShowConditions(ent);
                 }
+
+                // Conditions esp
+                if (show_conditions)
+                    ShowConditions(ent);
+
                 // Hoovy Esp
                 if (IsHoovy(ent))
                     AddEntityString(ent, hoovy_str);
@@ -1422,13 +1416,6 @@ void _FASTCALL ProcessEntity(CachedEntity *ent)
                         color     = colors::green;
                         break;
                     }
-                    // TF2C Adrenaline esp
-                }
-                else if (item_adrenaline && itemtype == ITEM_TF2C_PILL)
-                {
-                    write_str = pill_str;
-
-                    // Ammo pack esp
                 }
                 else if (item_ammo_packs && itemtype >= ITEM_AMMO_SMALL && itemtype <= ITEM_AMMO_LARGE)
                 {
@@ -1449,14 +1436,6 @@ void _FASTCALL ProcessEntity(CachedEntity *ent)
                 else if (item_powerups && itemtype >= ITEM_POWERUP_FIRST && itemtype <= ITEM_POWERUP_LAST)
                 {
                     write_str = powerups[itemtype - ITEM_POWERUP_FIRST];
-
-                    // TF2C weapon spawner esp
-                }
-                else if (item_weapon_spawners && itemtype >= ITEM_TF2C_W_FIRST && itemtype <= ITEM_TF2C_W_LAST)
-                {
-                    write_str = std::string(tf2c_weapon_names[itemtype - ITEM_TF2C_W_FIRST]) + " Spawner";
-                    if (CE_BYTE(ent, netvar.bRespawning))
-                        AddEntityString(ent, tf2c_spawner_respawn_str);
                 }
                 // Halloween spell esp
                 else if (item_spellbooks && (itemtype == ITEM_SPELL || itemtype == ITEM_SPELL_RARE))

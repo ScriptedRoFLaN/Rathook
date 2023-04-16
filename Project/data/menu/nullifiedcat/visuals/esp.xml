@@ -30,9 +30,6 @@
             	<AutoVariable width="fill" target="esp.item.gargoyle" label="Gargoyle" tooltip="Soul gargoyle pickup on halloween maps."/>
             </List>
         </Box>
-            <!-- <AutoVariable width="fill" target="esp.item.weapons" label="HL2:DM weapons"/>
-            <AutoVariable width="fill" target="esp.item.adrenaline" label="TF2C adrenaline"/>
-            <AutoVariable width="fill" target="esp.item.weapon-spawner" label="TC2C weapon spawner"/> -->
     </Box>
     <Box padding="12 6 6 6" width="content" height="content" name="Projectiles" x="170">
         <List width="150">

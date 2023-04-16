@@ -341,11 +341,6 @@ free(logname);*/
     CreateInterfaces();
     CDumper dumper;
     dumper.SaveDump();
-    logging::Info("Is TF2? %d", IsTF2());
-    logging::Info("Is TF2C? %d", IsTF2C());
-    logging::Info("Is HL2DM? %d", IsHL2DM());
-    logging::Info("Is CSS? %d", IsCSS());
-    logging::Info("Is TF? %d", IsTF());
     InitClassTable();
 
     BeginConVars();

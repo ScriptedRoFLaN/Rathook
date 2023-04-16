@@ -154,67 +154,65 @@ bool ShouldShoot()
     if (!UpdateAimkey())
         return false;
 
-    IF_GAME(IsTF2())
-    {
-        // Check if Carrying A building
-        if (CE_BYTE(g_pLocalPlayer->entity, netvar.m_bCarryingObject))
-            return false;
-        // Check if deadringer out
-        if (CE_BYTE(g_pLocalPlayer->entity, netvar.m_bFeignDeathReady))
-            return false;
-        // If zoomed only is on, check if zoomed
-        if (zoomed_only && g_pLocalPlayer->holding_sniper_rifle)
-        {
-            if (!g_pLocalPlayer->bZoomed && !(current_user_cmd->buttons & IN_ATTACK))
-                return false;
-        }
-        // Check if player is bonked
-        if (HasCondition<TFCond_Bonked>(g_pLocalPlayer->entity))
-            return false;
-        // Check if player is taunting
-        if (HasCondition<TFCond_Taunting>(g_pLocalPlayer->entity))
-            return false;
-        // Check if player is cloaked
-        if (IsPlayerInvisible(g_pLocalPlayer->entity))
-            return false;
+    // Check if Carrying A building
+    if (CE_BYTE(g_pLocalPlayer->entity, netvar.m_bCarryingObject))
+        return false;
 
-        if (IsAmbassador(g_pLocalPlayer->weapon()))
-        {
-            // Check if ambasador can headshot
-            if (!AmbassadorCanHeadshot())
-                return false;
-        }
+    // Check if deadringer out
+    if (CE_BYTE(g_pLocalPlayer->entity, netvar.m_bFeignDeathReady))
+        return false;
+
+    // If zoomed only is on, check if zoomed
+    if (zoomed_only && g_pLocalPlayer->holding_sniper_rifle)
+    {
+        if (!g_pLocalPlayer->bZoomed && !(current_user_cmd->buttons & IN_ATTACK))
+            return false;
     }
 
-    IF_GAME(IsTF2())
+    // Check if player is bonked
+    if (HasCondition<TFCond_Bonked>(g_pLocalPlayer->entity))
+        return false;
+
+    // Check if player is taunting
+    if (HasCondition<TFCond_Taunting>(g_pLocalPlayer->entity))
+        return false;
+
+    // Check if player is cloaked
+    if (IsPlayerInvisible(g_pLocalPlayer->entity))
+        return false;
+
+    if (IsAmbassador(g_pLocalPlayer->weapon()))
     {
-        switch (GetWeaponMode())
-        {
-        case weapon_hitscan:
-            break;
-        case weapon_melee:
-            break;
-        // Check if player is using a projectile based weapon
-        case weapon_projectile:
+        // Check if ambasador can headshot
+        if (!AmbassadorCanHeadshot())
             return false;
-            break;
-        // Check if player doesnt have a weapon usable by aimbot
-        default:
-            return false;
-        };
     }
-    IF_GAME(IsTF())
+
+    switch (GetWeaponMode())
     {
-        // Check if player is zooming
-        if (g_pLocalPlayer->bZoomed)
+    case weapon_hitscan:
+        break;
+    case weapon_melee:
+        break;
+    // Check if player is using a projectile based weapon
+    case weapon_projectile:
+        return false;
+        break;
+    // Check if player doesnt have a weapon usable by aimbot
+    default:
+        return false;
+    };
+    
+    // Check if player is zooming
+    if (g_pLocalPlayer->bZoomed)
+    {
+        if (!(current_user_cmd->buttons & (IN_ATTACK | IN_ATTACK2)))
         {
-            if (!(current_user_cmd->buttons & (IN_ATTACK | IN_ATTACK2)))
-            {
-                if (!CanHeadshot())
-                    return false;
-            }
+            if (!CanHeadshot())
+                return false;
         }
     }
+
     return true;
 }
 
@@ -240,34 +238,34 @@ bool IsTargetStateGood(CachedEntity *entity, std::optional<tf2::backtrack::Backt
         if (!player_tools::shouldTarget(entity))
             return false;
 
-        IF_GAME(IsTF())
+        // If settings allow waiting for charge, and current charge cant
+        // kill target, dont aim
+        if (*wait_for_charge && g_pLocalPlayer->holding_sniper_rifle)
         {
-            // If settings allow waiting for charge, and current charge cant
-            // kill target, dont aim
-            if (*wait_for_charge && g_pLocalPlayer->holding_sniper_rifle)
+            float bdmg = CE_FLOAT(g_pLocalPlayer->weapon(), netvar.flChargedDamage);
+            if (g_GlobalVars->curtime - g_pLocalPlayer->flZoomBegin <= 1.0f)
+                bdmg = 50.0f;
+            //                if ((bdmg * 3) < (HasDarwins(entity)
+            //                                      ? (entity->m_iHealth() *
+            //                                      1.15)
+            //                                      : entity->m_iHealth()))
+            if (bdmg * 3 < entity->m_iHealth())
             {
-                float bdmg = CE_FLOAT(g_pLocalPlayer->weapon(), netvar.flChargedDamage);
-                if (g_GlobalVars->curtime - g_pLocalPlayer->flZoomBegin <= 1.0f)
-                    bdmg = 50.0f;
-                //                if ((bdmg * 3) < (HasDarwins(entity)
-                //                                      ? (entity->m_iHealth() *
-                //                                      1.15)
-                //                                      : entity->m_iHealth()))
-                if (bdmg * 3 < entity->m_iHealth())
-                {
-                    return false;
-                }
+                return false;
             }
-            // Dont target invulnerable players, ex: uber, bonk
-            if (IsPlayerInvulnerable(entity))
-                return false;
-            // If settings allow, dont target cloaked players
-            if (ignore_cloak && IsPlayerInvisible(entity))
-                return false;
-            // If settings allow, dont target vaccinated players
-            if (ignore_vaccinator && IsPlayerResistantToCurrentWeapon(entity))
-                return false;
         }
+
+        // Dont target invulnerable players, ex: uber, bonk
+        if (IsPlayerInvulnerable(entity))
+            return false;
+
+        // If settings allow, dont target cloaked players
+        if (ignore_cloak && IsPlayerInvisible(entity))
+            return false;
+
+        // If settings allow, dont target vaccinated players
+        if (ignore_vaccinator && IsPlayerResistantToCurrentWeapon(entity))
+            return false;
 
         // Head hitbox detection
         if (HeadPreferable(entity))
@@ -412,72 +410,65 @@ bool HeadPreferable(CachedEntity *target)
     { // AUTO-HEAD priority
         // Var to keep if we can bodyshot
         bool headonly = false;
-        IF_GAME(IsTF())
+
+        // If user is using a sniper rifle, Set headonly to whether we can
+        // headshot or not,
+        if (g_pLocalPlayer->holding_sniper_rifle)
         {
-            // If user is using a sniper rifle, Set headonly to whether we can
-            // headshot or not,
-            if (g_pLocalPlayer->holding_sniper_rifle)
-            {
-                headonly = CanHeadshot();
-                // If player is using an ambassador, set headonly to true
-            }
-            else if (IsAmbassador(g_pLocalPlayer->weapon()))
-            {
-                headonly = true;
-            }
-            // Bodyshot handling
-            if (g_pLocalPlayer->holding_sniper_rifle)
-            {
-                // Some keeper vars
-                float cdmg, bdmg;
-                // Grab netvar for current charge damage
-                cdmg = CE_FLOAT(LOCAL_W, netvar.flChargedDamage);
-                // Set our baseline bodyshot damage
-                bdmg = 50;
-                // Darwins damage correction
-                //                if (HasDarwins(target))
-                //                {
-                // Darwins protects against 15% of damage
-                //                    bdmg = (bdmg * .85) - 1;
-                //                    cdmg = (cdmg * .85) - 1;
-                //                }
-                // Vaccinator damage correction
-                if (HasCondition<TFCond_UberBulletResist>(target))
-                {
-                    // Vac charge protects against 75% of damage
-                    bdmg = (bdmg * .25) - 1;
-                    cdmg = (cdmg * .25) - 1;
-                }
-                else if (HasCondition<TFCond_SmallBulletResist>(target))
-                {
-                    // Passive bullet resist protects against 10% of damage
-                    bdmg = (bdmg * .90) - 1;
-                    cdmg = (cdmg * .90) - 1;
-                }
-                // Invis damage correction
-                if (IsPlayerInvisible(target))
-                {
-                    // Invis spies get protection from 10% of damage
-                    bdmg = (bdmg * .80) - 1;
-                    cdmg = (cdmg * .80) - 1;
-                }
-                // If can headshot and if bodyshot kill from charge damage, or
-                // if crit boosted and they have 150 health, or if player isnt
-                // zoomed, or if the enemy has less than 40, due to darwins, and
-                // only if they have less than 150 health will it try to
-                // bodyshot
-                if (CanHeadshot() && (cdmg >= target->m_iHealth() || IsPlayerCritBoosted(g_pLocalPlayer->entity) || !g_pLocalPlayer->bZoomed || target->m_iHealth() <= bdmg) && target->m_iHealth() <= 150)
-                {
-                    // We dont need to hit the head as a bodyshot will kill
-                    headonly = false;
-                }
-            }
-            // In counter-strike source, headshots are what we want
+            headonly = CanHeadshot();
+            // If player is using an ambassador, set headonly to true
         }
-        else IF_GAME(IsCSS())
+        else if (IsAmbassador(g_pLocalPlayer->weapon()))
         {
             headonly = true;
         }
+        
+        // Bodyshot handling
+        if (g_pLocalPlayer->holding_sniper_rifle)
+        {
+            // Some keeper vars
+            float cdmg, bdmg;
+
+            // Grab netvar for current charge damage
+            cdmg = CE_FLOAT(LOCAL_W, netvar.flChargedDamage);
+
+            // Set our baseline bodyshot damage
+            bdmg = 50;
+
+            // Vaccinator damage correction
+            if (HasCondition<TFCond_UberBulletResist>(target))
+            {
+                // Vac charge protects against 75% of damage
+                bdmg = (bdmg * .25) - 1;
+                cdmg = (cdmg * .25) - 1;
+            }
+            else if (HasCondition<TFCond_SmallBulletResist>(target))
+            {
+                // Passive bullet resist protects against 10% of damage
+                bdmg = (bdmg * .90) - 1;
+                cdmg = (cdmg * .90) - 1;
+            }
+
+            // Invis damage correction
+            if (IsPlayerInvisible(target))
+            {
+                // Invis spies get protection from 10% of damage
+                bdmg = (bdmg * .80) - 1;
+                cdmg = (cdmg * .80) - 1;
+            }
+
+            // If can headshot and if bodyshot kill from charge damage, or
+            // if crit boosted and they have 150 health, or if player isnt
+            // zoomed, or if the enemy has less than 40, due to darwins, and
+            // only if they have less than 150 health will it try to
+            // bodyshot
+            if (CanHeadshot() && (cdmg >= target->m_iHealth() || IsPlayerCritBoosted(g_pLocalPlayer->entity) || !g_pLocalPlayer->bZoomed || target->m_iHealth() <= bdmg) && target->m_iHealth() <= 150)
+            {
+                // We dont need to hit the head as a bodyshot will kill
+                headonly = false;
+            }
+        }
+
         // Return our var of if we need to headshot
         return headonly;
     }

@@ -229,11 +229,10 @@ bool FormatSpamMessage(std::string &message)
     ReplaceSpecials(message);
     bool team       = g_pLocalPlayer->team - 2;
     bool enemy_team = !team;
-    IF_GAME(IsTF2())
-    {
-        ReplaceString(message, "%myteam%", teams[team]);
-        ReplaceString(message, "%enemyteam%", teams[enemy_team]);
-    }
+
+    ReplaceString(message, "%myteam%", teams[team]);
+    ReplaceString(message, "%enemyteam%", teams[enemy_team]);
+
     return SubstituteQueries(message);
 }
 
@@ -244,56 +243,54 @@ static size_t current_teamspam_idx = 0;
 
 static void CreateMove()
 {
-    IF_GAME(IsTF2())
+    // Spam changes the tournament name in casual and compeditive gamemodes
+    if (teamname_spam)
     {
-        // Spam changes the tournament name in casual and compeditive gamemodes
-        if (teamname_spam)
+        if (!(g_GlobalVars->tickcount % 10))
         {
-            if (!(g_GlobalVars->tickcount % 10))
+            if (teamspam_text.size())
             {
-                if (teamspam_text.size())
-                {
-                    // We've hit the end of the vector, loop back to the front
-                    // We need to do it like this, otherwise a file reload happening could cause this to crash at ".at"
-                    if (current_teamspam_idx >= teamspam_text.size())
-                        current_teamspam_idx = 0;
-                    g_IEngine->ServerCmd(format("tournament_teamname ", teamspam_text.at(current_teamspam_idx)).c_str());
-                    current_teamspam_idx++;
-                }
+                // We've hit the end of the vector, loop back to the front
+                // We need to do it like this, otherwise a file reload happening could cause this to crash at ".at"
+                if (current_teamspam_idx >= teamspam_text.size())
+                    current_teamspam_idx = 0;
+                g_IEngine->ServerCmd(format("tournament_teamname ", teamspam_text.at(current_teamspam_idx)).c_str());
+                current_teamspam_idx++;
             }
         }
+    }
 
-        if (voicecommand_spam)
+    if (voicecommand_spam)
+    {
+        static Timer last_voice_spam;
+        if (last_voice_spam.test_and_set(4000))
         {
-            static Timer last_voice_spam;
-            if (last_voice_spam.test_and_set(4000))
+            switch (*voicecommand_spam)
             {
-                switch (*voicecommand_spam)
-                {
-                case 1: // RANDOM
-                    g_IEngine->ServerCmd(format("voicemenu ", UniformRandomInt(0, 2), " ", UniformRandomInt(0, 8)).c_str());
-                    break;
-                case 2: // MEDIC
-                    g_IEngine->ServerCmd("voicemenu 0 0");
-                    break;
-                case 3: // THANKS
-                    g_IEngine->ServerCmd("voicemenu 0 1");
-                    break;
-                case 4: // NICE SHOT
-                    g_IEngine->ServerCmd("voicemenu 2 6");
-                    break;
-                case 5: // CHEERS
-                    g_IEngine->ServerCmd("voicemenu 2 2");
-                    break;
-                case 6: // JEERS
-                    g_IEngine->ServerCmd("voicemenu 2 3");
-                }
+            case 1: // RANDOM
+                g_IEngine->ServerCmd(format("voicemenu ", UniformRandomInt(0, 2), " ", UniformRandomInt(0, 8)).c_str());
+                break;
+            case 2: // MEDIC
+                g_IEngine->ServerCmd("voicemenu 0 0");
+                break;
+            case 3: // THANKS
+                g_IEngine->ServerCmd("voicemenu 0 1");
+                break;
+            case 4: // NICE SHOT
+                g_IEngine->ServerCmd("voicemenu 2 6");
+                break;
+            case 5: // CHEERS
+                g_IEngine->ServerCmd("voicemenu 2 2");
+                break;
+            case 6: // JEERS
+                g_IEngine->ServerCmd("voicemenu 2 3");
             }
         }
     }
 
     if (!spam_source)
         return;
+        
     static int safety_ticks = 0;
     static int last_source  = 0;
     if (*spam_source != last_source)

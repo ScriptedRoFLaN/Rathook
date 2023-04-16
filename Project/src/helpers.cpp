@@ -1297,10 +1297,9 @@ bool GetProjectileData(CachedEntity *weapon, float &speed, float &gravity, float
 {
     float rspeed, rgrav, rinitial_vel;
 
-    IF_GAME(!IsTF()) return false;
-
     if (CE_BAD(weapon))
         return false;
+
     rspeed       = 0.0f;
     rgrav        = 0.0f;
     rinitial_vel = 0.0f;
@@ -1334,12 +1333,11 @@ bool GetProjectileData(CachedEntity *weapon, float &speed, float &gravity, float
         rspeed       = 1216.6f;
         rgrav        = 1.0f;
         rinitial_vel = 200.0f;
-        IF_GAME(IsTF2())
-        {
-            // Loch'n Load
-            if (CE_INT(weapon, netvar.iItemDefinitionIndex) == 308)
-                rspeed = 1513.3f;
-        }
+
+        // Loch'n Load
+        if (CE_INT(weapon, netvar.iItemDefinitionIndex) == 308)
+            rspeed = 1513.3f;
+
         break;
     }
     case CL_CLASS(CTFPipebombLauncher):
@@ -1562,9 +1560,9 @@ bool IsSentryBuster(CachedEntity *entity)
 
 bool IsAmbassador(CachedEntity *entity)
 {
-    IF_GAME(!IsTF2()) return false;
     if (entity->m_iClassID() != CL_CLASS(CTFRevolver))
         return false;
+
     const int &defidx = CE_INT(entity, netvar.iItemDefinitionIndex);
     return (defidx == 61 || defidx == 1006);
 }

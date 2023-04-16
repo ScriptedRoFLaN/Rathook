@@ -25,11 +25,6 @@ if (NOT Force_CXX_23B)
 endif()
 add_library(cunthook SHARED "")
 
-set(GameSpecific 1 CACHE BOOL "Build for specific target game (As opposed to universal, but slower, lib)")
-set(Game "tf2" CACHE STRING "Target game")
-set(GameValues "tf2;hl2dm;dab;tf2c;css;dynamic" CACHE INTERNAL "List of supported game types")
-set_property(CACHE Game PROPERTY STRINGS ${GameValues})
-
 set(Visuals_DrawType "IMGUI" CACHE STRING "Target drawing api")
 set(DrawTypes "Textmode;No Visuals;Glez;Engine;IMGUI;IMGUI Streamproof" CACHE INTERNAL "Select the drawing api that cunthook should use")
 set_property(CACHE Visuals_DrawType PROPERTY STRINGS ${DrawTypes})
