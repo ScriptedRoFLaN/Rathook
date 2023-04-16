@@ -105,20 +105,6 @@ if (NOT ${Boost_FOUND})
     include_directories(${Boost_INCLUDE_DIRS})
 endif()
 
-
-#-- These manage the HASH and DATE when you cloned this project
-#-- this is used within the watermark ONLY.
-execute_process(COMMAND
-        "${GIT_EXECUTABLE}" log -1 --pretty=\"%h\"
-        WORKING_DIRECTORY "${CMAKE_SOURCE_DIR}"
-        OUTPUT_VARIABLE GIT_COMMIT_HASH
-        ERROR_QUIET OUTPUT_STRIP_TRAILING_WHITESPACE)
-execute_process(COMMAND
-        "${GIT_EXECUTABLE}" log -1 --pretty=\"%ai\"
-        WORKING_DIRECTORY "${CMAKE_SOURCE_DIR}"
-        OUTPUT_VARIABLE GIT_COMMITTER_DATE
-        ERROR_QUIET OUTPUT_STRIP_TRAILING_WHITESPACE)
-
 set( CMAKE_SKIP_RPATH true )
 find_library(ValveLibraryVStdLib NAMES vstdlib PATHS "${PROJECT_SOURCE_DIR}" NO_DEFAULT_PATH)
 
@@ -152,10 +138,9 @@ if(EnableVisuals)
 endif()
 
 
-#-- These manage both all the settings within this cmake file and
-#-- the github HASH and DATE and complie it into a file for c++ to use.
+#-- This adds all the CmakeLists.txt options to a (.h) and (.in) file for
+#-- easily managing the settings within the code of this project.
 configure_file(Headers/config.h.in ${CMAKE_SOURCE_DIR}/Headers/config.h @ONLY)
-configure_file(Headers/version.h.in ${CMAKE_SOURCE_DIR}/Headers/version.h @ONLY)
 
 set(CMAKE_CXX_FLAGS "-m32 -march=native -fexceptions -DNDEBUG")
 if (CMAKE_CXX_COMPILER_ID STREQUAL "GNU")

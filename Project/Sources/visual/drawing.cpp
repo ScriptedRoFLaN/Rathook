@@ -38,8 +38,8 @@ std::array<rgba_t, 32> side_strings_colors{ colors::empty };
 std::array<rgba_t, 32> center_strings_colors{ colors::empty };
 size_t side_strings_count{ 0 };
 size_t center_strings_count{ 0 };
-static settings::Int esp_font_size{ "visual.font_size.esp", "13" };
-static settings::Int center_font_size{ "visual.font_size.center_size", "14" };
+static settings::Int esp_font_size{ "visual.font_size.esp", "16" };
+static settings::Int center_font_size{ "visual.font_size.center_size", "18" };
 
 void InitStrings()
 {

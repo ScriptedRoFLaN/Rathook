@@ -32,7 +32,6 @@
 #define TO_STRING(x) STRINGIFY(x)
 
 #include "copypasted/CDumper.hpp"
-#include "version.h"
 #include <cxxabi.h>
 
 /*
@@ -44,19 +43,6 @@
 bool hack::game_shutdown = true;
 bool hack::shutdown      = false;
 bool hack::initialized   = false;
-
-const std::string &hack::GetVersion()
-{
-    static std::string version("Unknown Version");
-    static bool version_set = false;
-    if (version_set)
-        return version;
-#if defined(GIT_COMMIT_HASH) && defined(GIT_COMMITTER_DATE)
-    version = "Version: #" GIT_COMMIT_HASH " " GIT_COMMITTER_DATE;
-#endif
-    version_set = true;
-    return version;
-}
 
 const std::string &hack::GetType()
 {

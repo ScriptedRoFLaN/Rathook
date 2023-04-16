@@ -1,10 +1,3 @@
-/*
- * drawmgr.cpp
- *
- *  Created on: May 22, 2017
- *      Author: nullifiedcat
- */
-
 #include <MiscTemporary.hpp>
 #include <hacks/Aimbot.hpp>
 #include <hacks/hacklist.hpp>
@@ -27,28 +20,21 @@
 static settings::Boolean info_text{ "hack-info.enable", "true" };
 static settings::Boolean info_text_min{ "hack-info.minimal", "false" };
 
-void render_cheat_visuals()
-{
-    {
-        BeginCheatVisuals();
-    }
-    {
-        DrawCheatVisuals();
-    }
-    {
-        EndCheatVisuals();
-    }
+void render_cheat_visuals() {
+    BeginCheatVisuals();
+    DrawCheatVisuals();
+    EndCheatVisuals();
 }
+
 #if ENABLE_GLEZ_DRAWING
 glez::record::Record bufferA{};
 glez::record::Record bufferB{};
-
 glez::record::Record *buffers[] = { &bufferA, &bufferB };
 #endif
+
 int currentBuffer = 0;
 
-void BeginCheatVisuals()
-{
+void BeginCheatVisuals() {
 #if ENABLE_IMGUI_DRAWING
     im_renderer::bufferBegin();
 #elif ENABLE_GLEZ_DRAWING
@@ -58,8 +44,7 @@ void BeginCheatVisuals()
 }
 
 
-double getRandom(double lower_bound, double upper_bound)
-{
+double getRandom(double lower_bound, double upper_bound) {
     std::uniform_real_distribution<double> unif(lower_bound, upper_bound);
     static std::mt19937 rand_engine(std::time(nullptr));
 
@@ -67,51 +52,34 @@ double getRandom(double lower_bound, double upper_bound)
     return x;
 }
 
-void DrawCheatVisuals()
-{
-    {
-        std::string name_s, reason_s;
+void DrawCheatVisuals() {
+    std::string name_s, reason_s;
 
-        if (info_text)
-        {
-            auto color = colors::RainbowCurrent();
-            color.a    = 1.0f;
-            AddSideString("cathook by nullworks", color);
-            if (!info_text_min)
-            {
-                AddSideString(hack::GetVersion(),
-                              colors::gui);                  // github commit and date
-                AddSideString(hack::GetType(), colors::gui); //  Compile type
-#if ENABLE_GUI
-                AddSideString("Press '" + open_gui_button.toString() + "' key to open/close cheat menu.", colors::gui);
-                AddSideString("Use mouse to navigate in menu.", colors::gui);
-#endif
-            }
+    if (info_text) {
+        auto color = colors::CuntBlue;
+        color.a    = 1.0f;
+
+        AddSideString("Cunthook by Blue Snoop", color);
+
+        if (!info_text_min) {
+            AddSideString("The best linux cheat right next to cathook.", colors::gui);
         }
     }
-    if (spectator_target)
-    {
-        AddCenterString("Press SPACE to stop spectating");
-    }
-    {
-        EC::run(EC::Draw);
-    }
-    if (CE_GOOD(g_pLocalPlayer->entity) && !g_Settings.bInvalid)
-    {
+
+    EC::run(EC::Draw);
+
+    if (CE_GOOD(g_pLocalPlayer->entity) && !g_Settings.bInvalid) {
         Prediction_PaintTraverse();
     }
-    {
-        DrawStrings();
-    }
+
+    DrawStrings();
+
 #if ENABLE_GUI
-    {
-        gui::draw();
-    }
+    gui::draw();
 #endif
 }
 
-void EndCheatVisuals()
-{
+void EndCheatVisuals() {
 #if ENABLE_GLEZ_DRAWING
     buffers[currentBuffer]->end();
 #endif
@@ -120,8 +88,7 @@ void EndCheatVisuals()
 #endif
 }
 
-void DrawCache()
-{
+void DrawCache() {
 #if ENABLE_GLEZ_DRAWING
     buffers[!currentBuffer]->replay();
 #endif

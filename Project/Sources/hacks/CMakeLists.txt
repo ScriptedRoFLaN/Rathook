@@ -42,7 +42,6 @@ target_sources(cunthook PRIVATE ${files})
 
 if(EnableVisuals)
     set(files "${CMAKE_CURRENT_LIST_DIR}/BulletTracers.cpp"
-            "${CMAKE_CURRENT_LIST_DIR}/DominateMark.cpp"
             "${CMAKE_CURRENT_LIST_DIR}/ESP.cpp"
             "${CMAKE_CURRENT_LIST_DIR}/KillfeedColor.cpp"
             "${CMAKE_CURRENT_LIST_DIR}/Tracers.cpp"
