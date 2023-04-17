@@ -16,9 +16,10 @@
 
 <br>
 
-<img src="./Resources/img/menus.png">
+## Menu preview
+Heres the preview of our cheat menu that was redesigned to make your experience using cunthook better because the original version was horrible and looked liked it was designed by a toddler.
 
-###### A picture of our cheat menu and playerlist in-game.
+<img src="./Resources/img/menus.png">
 
 <br>
 
