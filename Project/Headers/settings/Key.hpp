@@ -34,7 +34,7 @@ public:
     // Valid inputs: "Mouse1", "Mouse5", "Key 6", "Key 10", "Key 2", "Space".
     void fromString(const std::string &string, bool init = false) override
     {
-        if (string == "<null>")
+        if (string == "None")
         {
             reset();
             return;
@@ -128,7 +128,7 @@ protected:
         else
         {
             if (SDL_GetScancodeFromKey(next.keycode) == static_cast<SDL_Scancode>(0))
-                string = "<null>";
+                string = "None";
             else
             {
                 const char *s = SDL_GetKeyName(next.keycode);

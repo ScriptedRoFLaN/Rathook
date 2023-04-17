@@ -10,7 +10,7 @@
 static settings::Float override_fov{ "visual.fov", "0" };
 static settings::Float freecam_speed{ "visual.freecam-speed", "800.0f" };
 static settings::Button freecam{ "visual.freecam-button", "<none>" };
-static settings::Button zoom_key{ "visual.zoom-key", "<null>" };
+static settings::Button zoom_key{ "visual.zoom-key", "None" };
 static settings::Int zoom_fov{ "visual.zoom-key.fov", "20" };
 bool freecam_is_toggled{ false };
 bool zoomed_last_tick{ false };

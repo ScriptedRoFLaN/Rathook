@@ -14,7 +14,7 @@ static settings::Boolean enable{ "autoreflect.enable", "false" };
 static settings::Boolean idle_only{ "autoreflect.idle-only", "false" };
 static settings::Boolean legit{ "autoreflect.legit", "false" };
 static settings::Boolean dodgeball{ "autoreflect.dodgeball", "false" };
-static settings::Button blastkey{ "autoreflect.button", "<null>" };
+static settings::Button blastkey{ "autoreflect.button", "None" };
 
 static settings::Boolean proj_default{ "autoreflect.default", "false" };
 static settings::Boolean stickies{ "autoreflect.stickies", "true" };

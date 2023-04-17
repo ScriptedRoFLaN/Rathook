@@ -164,11 +164,11 @@ void zerokernel::special::PlayerListController::updatePlayerState(int id, std::s
 {
     table.iterateObjects([this, id, state_string](BaseMenuObject *a) {
         auto row = dynamic_cast<TRow *>(a);
-        // Shouldn't happen
+
         if (row == nullptr)
             return;
-        if ((int) row->kv["player_id"] == id)
-        {
+
+        if ((int) row->kv["player_id"] == id) {
             auto state = dynamic_cast<Text *>(row->getElementById("state"));
             if (state)
                 state->kv["state"] = state_string;
@@ -189,41 +189,32 @@ void zerokernel::special::PlayerListController::addPlayer(int id, zerokernel::sp
         trow->kv["player_class"] = data.classId;
         trow->kv["player_dead"]  = int(data.dead);
         trow->kv["player_steam"] = int(data.steam);
-        auto uid                 = dynamic_cast<Text *>(trow->getElementById("uid"));
-        auto steam               = dynamic_cast<Text *>(trow->getElementById("steam"));
+
         auto username            = dynamic_cast<Text *>(trow->getElementById("username"));
         auto kick                = dynamic_cast<Text *>(trow->getElementById("kick"));
         auto state               = dynamic_cast<Text *>(trow->getElementById("state"));
-        if (uid)
-            uid->set(std::to_string(id));
-        if (steam)
-        {
-            steam->kv["steam_id"] = std::to_string(data.steam);
-            steam->kv["action"]   = "open_steam";
-            steam->addMessageHandler(*this);
-            steam->set(std::to_string(data.steam));
-        }
+        
         if (username && username->font)
             username->set(ShrinkString(data.name, username->bb.getParentBox().getContentBox().width, *username->font));
-        if (kick)
-        {
+
+        if (kick) {
             kick->kv["user_id"] = id;
             kick->kv["action"]  = "kick";
             kick->addMessageHandler(*this);
         }
-        if (state)
-        {
+
+        if (state) {
             state->kv["state"]    = data.state;
             state->kv["user_id"]  = id;
             state->kv["steam_id"] = std::to_string(data.steam);
             state->kv["action"]   = "change_state";
             state->addMessageHandler(*this);
         }
+
         updateRow(trow);
         table.addObject(std::move(row));
     }
-    else
-    {
+    else {
         printf("WARNING: Could not create a player list row from prefab\n");
         return;
     }

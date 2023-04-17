@@ -16,7 +16,7 @@
 
 namespace hacks::shared::walkbot
 {
-static settings::Button recording_key{ "walkbot.recording-key", "<null>" };
+static settings::Button recording_key{ "walkbot.recording-key", "None" };
 
 static settings::Boolean draw_info{ "walkbot.draw.info", "true" };
 static settings::Boolean draw_path{ "walkbot.draw.path", "true" };

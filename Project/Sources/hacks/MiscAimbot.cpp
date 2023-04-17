@@ -15,7 +15,7 @@
 namespace hacks::tf2::misc_aimbot
 {
 static settings::Boolean sandwichaim_enabled{ "sandwichaim.enable", "false" };
-static settings::Button sandwichaim_aimkey{ "sandwichaim.aimkey", "<null>" };
+static settings::Button sandwichaim_aimkey{ "sandwichaim.aimkey", "None" };
 static settings::Int sandwichaim_aimkey_mode{ "sandwichaim.aimkey-mode", "0" };
 
 constexpr float sandwich_speed = 350.0f;

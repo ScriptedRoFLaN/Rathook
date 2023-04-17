@@ -12,7 +12,7 @@
 namespace hacks::tf::thirdperson
 {
 static settings::Boolean enable{ "visual.thirdperson.enable", "false" };
-static settings::Button thirdperson_key{ "visual.thirdperson-button", "<null>" };
+static settings::Button thirdperson_key{ "visual.thirdperson-button", "None" };
 static settings::Boolean real_angles{ "visual.thirdperson.real-angles", "false" };
 static settings::Boolean disable_zoomed{ "visual.thirdperson.disable-zoomed", "false" };
 static bool was_enabled{ false };

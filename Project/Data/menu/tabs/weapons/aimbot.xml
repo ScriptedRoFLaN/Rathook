@@ -104,7 +104,7 @@
             <AutoVariable width="fill" target="aimbot.target.ignore-deadringer" label="Ignore Dead Ringer"/>
         </List>
     </Box>
-    <Box padding="12 6 6 6" width="content" height="content" name="Autoshoot" x="170" y="290">
+    <Box padding="12 6 6 6" width="content" height="content" name="Autoshoot" x="170" y="270">
         <List width="150">
             <AutoVariable width="fill" target="aimbot.autoshoot" label="Enable autoshoot" tooltip="Make the aimbot automatically fire your weapon."/>
             <AutoVariable width="fill" target="aimbot.wait-for-charge" label="Wait for charge" tooltip="Hold fire until a single shot is enough to kill the target."/>
@@ -147,19 +147,6 @@
                     <Option name="Primary + secondary" value="4"/>
                     <Option name="Primary + melee" value="5"/>
                     <Option name="Secondary + melee" value="6"/>
-                </Select>
-            </LabeledObject>
-        </List>
-    </Box>
-    <Box padding="12 6 6 6" width="content" height="content" name="Sandvich aimbot" x="340" y="230">
-        <List width="150">
-            <AutoVariable width="fill" target="sandwichaim.enable" label="Enable Sandvich aimbot"/>
-            <AutoVariable width="fill" target="sandwichaim.aimkey" label="Aimkey"/>
-            <LabeledObject width="fill" label="Aimkey mode">
-                <Select target="sandwichaim.aimkey-mode">
-                    <Option name="Disable" value="0"/>
-                    <Option name="Pressed" value="1"/>
-                    <Option name="Not pressed" value="2"/>
                 </Select>
             </LabeledObject>
         </List>

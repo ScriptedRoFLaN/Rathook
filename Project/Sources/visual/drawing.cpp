@@ -1,16 +1,4 @@
-﻿/*
- * drawing.cpp
- *
- *  Created on: Mar 10, 2019
- *      Author: Lighty
- */
-/*
- * drawing.cpp
- *
- *  Created on: Oct 5, 2016
- *      Author: nullifiedcat
- */
-#include "common.hpp"
+﻿#include "common.hpp"
 #if ENABLE_IMGUI_DRAWING
 #include "imgui/imrenderer.hpp"
 #elif ENABLE_GLEZ_DRAWING
@@ -24,7 +12,6 @@
 #include <SDLHooks.hpp>
 #include "soundcache.hpp"
 
-// String -> Wstring
 #include <codecvt>
 #include <locale>
 
@@ -36,6 +23,7 @@ std::array<std::string, 32> side_strings;
 std::array<std::string, 32> center_strings;
 std::array<rgba_t, 32> side_strings_colors{ colors::empty };
 std::array<rgba_t, 32> center_strings_colors{ colors::empty };
+
 size_t side_strings_count{ 0 };
 size_t center_strings_count{ 0 };
 static settings::Int esp_font_size{ "visual.font_size.esp", "16" };
@@ -216,9 +204,9 @@ void Initialize()
     fonts::esp.reset(new fonts::font(paths::getDataPath("/menu/Font.ttf"), 10, true));
     fonts::center_screen.reset(new fonts::font(paths::getDataPath("/menu/Font.ttf"), 12, true));
 #elif ENABLE_IMGUI_DRAWING
-    fonts::menu.reset(new fonts::font(paths::getDataPath("/menu/Font.ttf"), 13, true));
-    fonts::esp.reset(new fonts::font(paths::getDataPath("/menu/Font.ttf"), 13, true));
-    fonts::center_screen.reset(new fonts::font(paths::getDataPath("/menu/Font.ttf"), 14, true));
+    fonts::menu.reset(new fonts::font(paths::getDataPath("/menu/Font.ttf"), 14, true));
+    fonts::esp.reset(new fonts::font(paths::getDataPath("/menu/Font.ttf"), 16, true));
+    fonts::center_screen.reset(new fonts::font(paths::getDataPath("/menu/Font.ttf"), 18, true));
 #endif
 #if ENABLE_ENGINE_DRAWING
     texture_white                = g_ISurface->CreateNewTextureID();

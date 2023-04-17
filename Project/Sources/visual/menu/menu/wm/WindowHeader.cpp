@@ -24,7 +24,7 @@ zerokernel::WindowHeader::WindowHeader(WMWindow &window) : BaseMenuObject(), win
 
     auto title  = std::make_unique<Text>();
     this->title = title.get();
-    title->bb.setPadding(0, 0, 5, 0);
+    title->bb.setPadding(4.5, 4.5, 5, 0);
     title->bb.width.setContent();
     title->bb.height.setContent();
     printf("Title: %p\n", this->title);

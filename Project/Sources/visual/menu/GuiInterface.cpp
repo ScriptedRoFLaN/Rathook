@@ -29,6 +29,7 @@ static zerokernel::special::PlayerListData createPlayerListData(int userid)
     data.steam   = info.friendsID;
     data.state   = playerlist::k_pszNames[static_cast<int>(playerlist::AccessData(info.friendsID).state)];
     data.name    = info.name;
+
     return data;
 }
 
@@ -39,13 +40,7 @@ static void initPlayerlist()
     {
         controller = std::make_unique<zerokernel::special::PlayerListController>(*pl);
         controller->setKickButtonCallback([](int uid) { hack::command_stack().push(format("callvote kick ", uid)); });
-        controller->setOpenSteamCallback(
-            [](unsigned steam)
-            {
-                CSteamID id{};
-                id.Set(steam, EUniverse::k_EUniversePublic, EAccountType::k_EAccountTypeIndividual);
-                g_ISteamFriends->ActivateGameOverlayToUser("steamid", id);
-            });
+            
         controller->setChangeStateCallback(
             [](unsigned steam, int userid)
             {
@@ -59,12 +54,12 @@ static void initPlayerlist()
                         return;
                     }
                 }
+
                 pl.state = playerlist::k_arrGUIStates.front().first;
                 controller->updatePlayerState(userid, playerlist::k_Names[static_cast<size_t>(pl.state)]);
             });
     }
-    else
-    {
+    else {
         logging::Info("PlayerList element not found\n");
     }
 }
@@ -74,6 +69,7 @@ void sortPList()
     for (auto i = 1; i <= MAX_PLAYERS; ++i)
     {
         player_info_s info{};
+
         if (GetPlayerInfo(i, &info))
         {
             auto idx = GetPlayerForUserID(info.userID);
@@ -82,10 +78,7 @@ void sortPList()
                 controller->addPlayer(info.userID, createPlayerListData(info.userID));
             }
         }
-    }
-    for (auto i = 1; i <= MAX_PLAYERS; ++i)
-    {
-        player_info_s info{};
+
         if (GetPlayerInfo(i, &info))
         {
             auto idx = GetPlayerForUserID(info.userID);
@@ -94,10 +87,7 @@ void sortPList()
                 controller->addPlayer(info.userID, createPlayerListData(info.userID));
             }
         }
-    }
-    for (auto i = 1; i <= MAX_PLAYERS; ++i)
-    {
-        player_info_s info{};
+
         if (GetPlayerInfo(i, &info))
         {
             auto idx = GetPlayerForUserID(info.userID);

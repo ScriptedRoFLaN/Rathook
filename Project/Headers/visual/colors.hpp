@@ -111,10 +111,10 @@ namespace colors {
     extern rgba_t blu_u;  // Ubercharge
     extern rgba_t gui;    // GUI color
     extern rgba_t target; // Aimbot target color
-    constexpr rgba_t red_s  = FromRGBA8(237, 42, 42, 255); // Not user controlled
-    constexpr rgba_t yellow = FromRGBA8(255, 255, 0, 255);
-    constexpr rgba_t orange = FromRGBA8(255, 120, 0, 255);
-    constexpr rgba_t green  = FromRGBA8(0, 255, 0, 255);
+    constexpr rgba_t red_s  = FromRGBA8(207, 56, 56, 255); // Not user controlled
+    constexpr rgba_t yellow = FromRGBA8(207, 182, 56, 255);
+    constexpr rgba_t orange = FromRGBA8(207, 121, 56, 255);
+    constexpr rgba_t green  = FromRGBA8(56, 207, 66, 255);
     constexpr rgba_t empty  = FromRGBA8(0, 0, 0, 0);
 
     // Custom colors

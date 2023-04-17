@@ -36,7 +36,6 @@
 #include "./menu/Text.cpp"
 #include "./menu/wm/WindowManager.cpp"
 #include "./menu/wm/WMWindow.cpp"
-#include "./menu/wm/Task.cpp"
 #include "./menu/wm/WindowHeader.cpp"
 #include "./menu/wm/WindowContainer.cpp"
 #include "./menu/special/VariableListEntry.cpp"

@@ -73,6 +73,6 @@
                 </List>
             </Box>
         </Tab>
-        <Include path="nullifiedcat/visuals/chamshaders.xml"/>
+        <Include path="visuals/chamshaders.xml"/>
     </TabContainer>
 </Tab>

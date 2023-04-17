@@ -34,7 +34,7 @@ static settings::Float aaaa_interval{ "antiaim.aaaa.interval.seconds", "0" };
 static settings::Float aaaa_interval_random_high{ "antiaim.aaaa.interval.random-high", "10" };
 static settings::Float aaaa_interval_random_low{ "antiaim.aaaa.interval.random-low", "2" };
 static settings::Int aaaa_mode{ "antiaim.aaaa.mode", "0" };
-static settings::Button aaaa_flip_key{ "antiaim.aaaa.flip-key", "<null>" };
+static settings::Button aaaa_flip_key{ "antiaim.aaaa.flip-key", "None" };
 
 // Unused?
 static settings::Int yaw_sideways_min{ "antiaim.yaw.sideways.min", "0" };

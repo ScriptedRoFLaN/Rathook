@@ -11,13 +11,16 @@
 * Implement **Disable Nullnexus** (Probably not needed anymore since most bots don't use Nullnexus).
 * Implement **Low Health: Call Medic** when you are low on health, and also calls medic if the medic is close enough to you.
 * Remove **Duplicate Code** which has been know to hog performance.
-* Update CXX to 23 and also fix other CMAKE related things.
+* ~~Update CXX to 23 and also fix other CMAKE related things.~~
 * Add offsets for **Resupply Cabinet** for Navbot to find when in need of health.
-* Remove git-checks and other git things to make each git install of this project isloted to itself.
+* ~~Remove git-checks and other git things to make each git install of this project isloted to itself.~~
 * ~~Automatically install NavMeshes.~~
 * Prevent NavBot from getting stuck while attacking sentrys, dying instantly.
 * Fix Aimbot being inaccurate to the point its actually not good.
-* Fix angles as they are broken and do allow for slient and other aa features to work.
+* Fix angles as they are broken and do allow for slient and other aa features to work. (found the issue: moonwalk)
+* Fix Radar breaking if Y-level is set past 1000, then attempted to edit the value again.
+* Continue redoing the menu.
+* remove sandvich aimbot.
 
 <br>
 <br>

@@ -11,7 +11,7 @@ namespace criticals
 {
 settings::Boolean enabled{ "crit.enabled", "false" };
 settings::Boolean melee{ "crit.melee", "false" };
-static settings::Button crit_key{ "crit.key", "<null>" };
+static settings::Button crit_key{ "crit.key", "None" };
 static settings::Boolean force_no_crit{ "crit.anti-crit", "true" };
 
 static settings::Boolean draw{ "crit.info", "false" };

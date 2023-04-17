@@ -21,7 +21,7 @@ static settings::Boolean wait_for_charge{ "trigger.wait-for-charge", "false" };
 static settings::Boolean zoomed_only{ "trigger.zoomed-only", "true" };
 static settings::Float delay{ "trigger.delay", "0" };
 
-static settings::Button trigger_key{ "trigger.key.button", "<null>" };
+static settings::Button trigger_key{ "trigger.key.button", "None" };
 static settings::Int trigger_key_mode{ "trigger.key.mode", "1" };
 // FIXME move these into targeting
 static settings::Boolean ignore_cloak{ "trigger.target.ignore-cloaked-spies", "true" };

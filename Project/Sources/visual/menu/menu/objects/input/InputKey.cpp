@@ -76,7 +76,7 @@ void zerokernel::InputKey::render()
         renderBorder(*zerokernel_inputkey::color_border);
         if (capturing)
         {
-            text.set("<...>");
+            text.set("...");
         }
         else
             text.set(key->toString());

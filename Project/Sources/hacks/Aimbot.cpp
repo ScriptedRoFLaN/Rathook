@@ -22,7 +22,7 @@
 namespace hacks::shared::aimbot
 {
 static settings::Boolean normal_enable{ "aimbot.enable", "false" };
-static settings::Button aimkey{ "aimbot.aimkey.button", "<null>" };
+static settings::Button aimkey{ "aimbot.aimkey.button", "None" };
 static settings::Int aimkey_mode{ "aimbot.aimkey.mode", "1" };
 static settings::Boolean autoshoot{ "aimbot.autoshoot", "1" };
 static settings::Boolean autoreload{ "aimbot.autoshoot.activate-heatmaker", "false" };
