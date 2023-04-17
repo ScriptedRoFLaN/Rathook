@@ -1,3 +1,5 @@
+###### This readme does not actually relate to the cheat "YET", I'm still doing things to make it true.
+
 <div align="center"><img width="400rem" src="./Resources/img/logo.png"></div>
 
 <div align="center"><h3>Cunthook</h3></div>
