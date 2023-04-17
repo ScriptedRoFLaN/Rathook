@@ -11,7 +11,6 @@
 * **Smart Zoom** which allows bots to zoom before seeing a target preventing them from dying with no chance to survive.
 * **Rich presence** making yourself cool on that steam friends list.
 * Functional **Resolver** and **Anti-Aim** creating the best HVH experience for you possible.
-* Optional ability to turn off **Nullnexus** to prevent bot detections on you.
 * General **Performance** fixes making your time using Cunthook better.
 
 <br>
