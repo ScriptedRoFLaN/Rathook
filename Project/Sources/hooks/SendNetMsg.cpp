@@ -8,7 +8,6 @@
 #include "AntiAim.hpp"
 #include "HookedMethods.hpp"
 #include <MiscTemporary.hpp>
-#include "nullnexus.hpp"
 #include "e8call.hpp"
 #include "Warp.hpp"
 #include "nospread.hpp"
@@ -18,6 +17,7 @@ static settings::Int newlines_msg{ "chat.prefix-newlines", "0" };
 static settings::Boolean log_sent{ "debug.log-sent-chat", "false" };
 static settings::Boolean answerIdentify{ "chat.identify.answer", "true" };
 static Timer identify_timer{};
+
 constexpr int CAT_IDENTIFY   = 0xCA7;
 constexpr int CAT_REPLY      = 0xCA8;
 constexpr float AUTH_MESSAGE = 1234567.0f;
@@ -71,35 +71,7 @@ static CatCommand debug_drawpanel("debug_drawline", "debug",
                                       g_IEngine->ServerCmdKeyValues(kv);
                                   });
 
-#if ENABLE_TEXTMODE
-settings::Boolean identify{ "chat.identify", "true" };
-#else
 settings::Boolean identify{ "chat.identify", "false" };
-#endif
-
-/*void ProcessSendline(IGameEvent *kv)
-{
-    int player_idx = kv->GetInt("player", 0xDEAD);
-
-    auto id            = kv->GetFloat("x");
-    float message_type = kv->GetFloat("y");
-    auto panel_type    = kv->GetInt("panel");
-    auto line_type     = kv->GetInt("line");
-
-    // Verify all the data matches
-    if (player_idx != 0xDEAD && panel_type == 2 && line_type == 0 && message_type == AUTH_MESSAGE && (id == CAT_IDENTIFY || id == CAT_REPLY))
-    {
-        player_info_s info;
-        if (!GetPlayerInfo(player_idx, &info))
-            return;
-        // CA7 = Reply and change state
-        // CA8 = Change state
-        if (id == CAT_IDENTIFY && *answerIdentify && player_idx != g_pLocalPlayer->entity_idx && playerlist::AccessData(info.friendsID).state != playerlist::k_EState::RAGE)
-            send_drawline_reply = true;
-        if (playerlist::ChangeState(info.friendsID, playerlist::k_EState::CAT))
-            PrintChat("\x07%06X%s\x01 Marked as CAT (Cathook user)", 0xe05938, info.name);
-    }
-}*/
 
 std::vector<KeyValues *> Iterate(KeyValues *event, int depth)
 {
@@ -197,11 +169,13 @@ void ProcessAchievement(IGameEvent *ach)
         player_info_s info;
         if (!g_IEngine->GetPlayerInfo(player_idx, &info))
             return;
+
         if (reply && *answerIdentify && player_idx != g_pLocalPlayer->entity_idx)
         {
             send_achievement_reply_timer.update();
             send_achievement_reply = true;
         }
+        
         if (playerlist::ChangeState(info.friendsID, playerlist::k_EState::CAT))
             PrintChat("\x07%06X%s\x01 Marked as CAT (Cathook user)", 0xe05938, info.name);
     }
@@ -270,25 +244,6 @@ DEFINE_HOOKED_METHOD(SendNetMsg, bool, INetChannel *this_, INetMessage &msg, boo
             offset    = say_idx ? 26 : 21;
             bool crpt = false;
 
-#if ENABLE_NULLNEXUS
-            // Only allow !! and !!! if crypto_chat is on
-            if (crypt_chat)
-            {
-                std::string msg(str.substr(offset));
-                msg = msg.substr(0, msg.length() - 2);
-                if (msg.find("!!!") == 0 || msg.find("!!") == 0)
-                {
-                    int sub_val = 2;
-                    if (msg.find("!!!") == 0)
-                        sub_val = 3;
-                    // Message is sent over Nullnexus.
-                    std::string substrmsg(msg.substr(sub_val));
-                    nullnexus::sendmsg(substrmsg);
-                    // Do not send message over normal chat.
-                    return false;
-                }
-            }
-#endif
             if (!crpt && *newlines_msg > 0)
             {
                 // TODO move out? update in a value change callback?

@@ -93,6 +93,7 @@
                     <Option name="All" value="2"/>
                 </Select>
             </LabeledObject>
+            <AutoVariable width="fill" target="aimbot.auto-body" label="Body shot" tooltip="Will bodyshot if the charge is enough to kill them. Useful for HVH."/>
             <AutoVariable width="fill" target="aimbot.assistance.only" label="Assistance only" tooltip="Aimbot will only activate if your mouse has moved in the last half second."/>
             <AutoVariable width="fill" target="aimbot.lock-target" label="Lock target" tooltip="Lock onto a target until they die or leave your FOV."/>
             <AutoVariable width="fill" target="aimbot.target.ignore-non-rage" label="Rage only" tooltip="Only target players set to RAGE."/>
@@ -104,7 +105,7 @@
             <AutoVariable width="fill" target="aimbot.target.ignore-deadringer" label="Ignore Dead Ringer"/>
         </List>
     </Box>
-    <Box padding="12 6 6 6" width="content" height="content" name="Autoshoot" x="170" y="270">
+    <Box padding="12 6 6 6" width="content" height="content" name="Autoshoot" x="170" y="280">
         <List width="150">
             <AutoVariable width="fill" target="aimbot.autoshoot" label="Enable autoshoot" tooltip="Make the aimbot automatically fire your weapon."/>
             <AutoVariable width="fill" target="aimbot.wait-for-charge" label="Wait for charge" tooltip="Hold fire until a single shot is enough to kill the target."/>

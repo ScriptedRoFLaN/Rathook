@@ -6,7 +6,7 @@
 sudo=${CH_SUDO:-sudo};
 
 if [ $(id -u) -eq 0 ]; then
-    echo -e "Please do not attempt to use \"sudo\" with the update script";
+    echo -e "Please do not use \"sudo\" with the script, it will be provided if needed automatically.";
     exit 1;
 fi
 
@@ -31,7 +31,7 @@ function InstallData() {
 
         echo "Created data path";
     else
-        echo -e "Path already create\n";
+        echo -e "Path already created\n";
     fi
 
     sudo rsync -avh "Project/Data/" "$DATA_PATH" || { sudo rsync -avh "Project/Data/" "$DATA_PATH"; };

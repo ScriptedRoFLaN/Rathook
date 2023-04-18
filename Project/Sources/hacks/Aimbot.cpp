@@ -19,12 +19,14 @@
 #include "FollowBot.hpp"
 #include "Warp.hpp"
 #include "AntiCheatBypass.hpp"
+
 namespace hacks::shared::aimbot
 {
 static settings::Boolean normal_enable{ "aimbot.enable", "false" };
 static settings::Button aimkey{ "aimbot.aimkey.button", "None" };
 static settings::Int aimkey_mode{ "aimbot.aimkey.mode", "1" };
 static settings::Boolean autoshoot{ "aimbot.autoshoot", "1" };
+static settings::Boolean bodyshot_ifneeded{ "aimbot.auto-body"};
 static settings::Boolean autoreload{ "aimbot.autoshoot.activate-heatmaker", "false" };
 static settings::Boolean autoshoot_disguised{ "aimbot.autoshoot-disguised", "1" };
 static settings::Boolean multipoint{ "aimbot.multipoint", "0" };
@@ -1465,12 +1467,10 @@ int autoHitbox(CachedEntity *target)
             bdmg = (bdmg * .80) - 1;
             cdmg = (cdmg * .80) - 1;
         }
-        // If can headshot and if bodyshot kill from charge damage, or
-        // if crit boosted and they have 150 health, or if player isnt
-        // zoomed, or if the enemy has less than 40, due to darwins, and
-        // only if they have less than 150 health will it try to
-        // bodyshot
-        if (std::floor(cdmg) >= target_health || IsPlayerCritBoosted(g_pLocalPlayer->entity) || (target_health <= std::floor(bdmg) && target_health <= 150))
+        
+        // Bodyshot if charge is strong enough to oneshot the enemy
+        // ONLY do this if they enable it instead of forcing it no matter what.
+        if ((std::floor(cdmg) >= target_health || IsPlayerCritBoosted(g_pLocalPlayer->entity) || (target_health <= std::floor(bdmg) && target_health <= 150)) && bodyshot_ifneeded)
         {
             // We dont need to hit the head as a bodyshot will kill
             preferred = hitbox_t::spine_1;

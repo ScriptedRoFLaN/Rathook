@@ -14,16 +14,20 @@ ItemManager::ItemManager() : mapper()
     RegisterModelMapping("models/items/medkit_small.mdl", ITEM_HEALTH_SMALL);
     RegisterModelMapping("models/items/medkit_medium.mdl", ITEM_HEALTH_MEDIUM);
     RegisterModelMapping("models/items/medkit_large.mdl", ITEM_HEALTH_LARGE);
+
     // Halloween
     RegisterModelMapping("models/props_halloween/halloween_medkit_small.mdl", ITEM_HEALTH_SMALL);
     RegisterModelMapping("models/props_halloween/halloween_medkit_medium.mdl", ITEM_HEALTH_MEDIUM);
     RegisterModelMapping("models/props_halloween/halloween_medkit_large.mdl", ITEM_HEALTH_LARGE);
+
     // Holiday
     RegisterModelMapping("models/items/medkit_small_bday.mdl", ITEM_HEALTH_SMALL);
     RegisterModelMapping("models/items/medkit_medium_bday.mdl", ITEM_HEALTH_MEDIUM);
     RegisterModelMapping("models/items/medkit_large_bday.mdl", ITEM_HEALTH_LARGE);
+
     // Medieval
     RegisterModelMapping("models/props_medieval/medieval_meat.mdl", ITEM_HEALTH_MEDIUM);
+
     // Edibles / Lunchboxes
     RegisterModelMapping("models/items/plate.mdl", EDIBLE_MEDIUM);
     RegisterModelMapping("models/items/plate_sandwich_xmas.mdl", EDIBLE_MEDIUM);
@@ -38,10 +42,12 @@ ItemManager::ItemManager() : mapper()
     RegisterModelMapping("models/items/ammopack_small.mdl", ITEM_AMMO_SMALL);
     RegisterModelMapping("models/items/ammopack_medium.mdl", ITEM_AMMO_MEDIUM);
     RegisterModelMapping("models/items/ammopack_large.mdl", ITEM_AMMO_LARGE);
+
     // Holiday
     RegisterModelMapping("models/items/ammopack_small_bday.mdl", ITEM_AMMO_SMALL);
     RegisterModelMapping("models/items/ammopack_medium_bday.mdl", ITEM_AMMO_MEDIUM);
     RegisterModelMapping("models/items/ammopack_large_bday.mdl", ITEM_AMMO_LARGE);
+    
     // Crumpkin
     RegisterModelMapping("models/props_halloween/pumpkin_loot.mdl", ITEM_CRUMPKIN);
 

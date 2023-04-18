@@ -46,11 +46,7 @@ static settings::Boolean misc_drawhitboxes{ "misc.draw-hitboxes", "false" };
 static settings::Boolean misc_drawhitboxes_dead{ "misc.draw-hitboxes.dead-players", "false" };
 #endif
 
-#if ENABLE_TEXTMODE
-static settings::Boolean fix_cyoaanim{ "remove.contracker", "true" };
-#else
 static settings::Boolean fix_cyoaanim{ "remove.contracker", "false" };
-#endif
 
 #if !ENFORCE_STREAM_SAFETY && ENABLE_VISUALS
 static void tryPatchLocalPlayerShouldDraw(bool after)

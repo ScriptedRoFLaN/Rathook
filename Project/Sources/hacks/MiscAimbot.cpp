@@ -14,10 +14,6 @@
 
 namespace hacks::tf2::misc_aimbot
 {
-static settings::Boolean sandwichaim_enabled{ "sandwichaim.enable", "false" };
-static settings::Button sandwichaim_aimkey{ "sandwichaim.aimkey", "None" };
-static settings::Int sandwichaim_aimkey_mode{ "sandwichaim.aimkey-mode", "0" };
-
 constexpr float sandwich_speed = 350.0f;
 constexpr float grav           = 0.25f;
 constexpr float initial_vel    = 200.0f;
@@ -220,49 +216,6 @@ void DoSlowAim(Vector &input_angle, int speed)
 
         // Clamp as we changed angles
         fClampAngle(input_angle);
-    }
-}
-
-static void SandwichAim()
-{
-    if (!*sandwichaim_enabled)
-        return;
-    if (CE_BAD(LOCAL_E) || !LOCAL_E->m_bAlivePlayer() || CE_BAD(LOCAL_W))
-        return;
-    if (sandwichaim_aimkey)
-    {
-        switch (*sandwichaim_aimkey_mode)
-        {
-        case 1:
-            if (!sandwichaim_aimkey.isKeyDown())
-                return;
-            break;
-        case 2:
-            if (sandwichaim_aimkey.isKeyDown())
-                return;
-            break;
-        default:
-            break;
-        }
-    }
-    if (LOCAL_W->m_iClassID() != CL_CLASS(CTFLunchBox))
-        return;
-    Vector Predict;
-    CachedEntity *bestent = nullptr;
-    std::pair<CachedEntity *, Vector> result{};
-    result  = FindBestEnt(true, true, false, false);
-    bestent = result.first;
-    Predict = result.second;
-    if (bestent)
-    {
-        Vector tr = Predict - g_pLocalPlayer->v_Eye;
-        Vector angles;
-        VectorAngles(tr, angles);
-        // Clamping is important
-        fClampAngle(angles);
-        current_user_cmd->viewangles = angles;
-        current_user_cmd->buttons |= IN_ATTACK2;
-        g_pLocalPlayer->bUseSilentAngles = true;
     }
 }
 
@@ -576,7 +529,6 @@ static void BuildingAimbot()
 
 static void CreateMove()
 {
-    SandwichAim();
     ChargeAimbot();
     SapperAimbot();
     BuildingAimbot();
